@@ -1,0 +1,78 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.4.0"
+    id("io.micronaut.test-resources") version "4.4.0"
+    id("io.micronaut.aot") version "4.4.0"
+}
+
+version = "0.1"
+group = "com"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Annotation processors
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.spring:micronaut-spring-annotation")
+
+    // Implementation dependencies
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.data:micronaut-data-spring")
+    implementation("io.micronaut.data:micronaut-data-spring-jpa")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("org.springframework:spring-orm")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("io.micronaut:micronaut-http-client")
+
+    implementation("org.modelmapper:modelmapper:3.1.0")
+
+    // Compile only dependencies
+    compileOnly("org.projectlombok:lombok")
+
+    // Runtime only dependencies
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("com.mysql:mysql-connector-j")
+
+    // Test dependencies
+    testImplementation("io.micronaut:micronaut-http-client")
+}
+
+application {
+    mainClass.set("com.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+graalvmNative {
+    toolchainDetection = false
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.*")
+    }
+    aot {
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading.set(false)
+        convertYamlToJava.set(false)
+        precomputeOperations.set(true)
+        cacheEnvironment.set(true)
+        optimizeClassLoading.set(true)
+        deduceEnvironment.set(true)
+        optimizeNetty.set(true)
+        replaceLogbackXml.set(true)
+    }
+}
