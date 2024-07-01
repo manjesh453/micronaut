@@ -3,6 +3,7 @@ plugins {
     id("io.micronaut.application") version "4.4.0"
     id("io.micronaut.test-resources") version "4.4.0"
     id("io.micronaut.aot") version "4.4.0"
+    id("io.micronaut.openapi") version "4.4.0"
 }
 
 version = "0.1"
@@ -38,6 +39,10 @@ dependencies {
     // Runtime only dependencies
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    implementation("javax.annotation:javax.annotation-api")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    implementation("io.swagger.core.v3:swagger-annotations")
 
     // Test dependencies
     testImplementation("io.micronaut:micronaut-http-client")
@@ -76,3 +81,8 @@ micronaut {
         replaceLogbackXml.set(true)
     }
 }
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.forkOptions.jvmArgs << '-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop'
+}
+

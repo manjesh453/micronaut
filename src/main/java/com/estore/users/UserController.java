@@ -1,13 +1,16 @@
 package com.estore.users;
 
 import io.micronaut.http.annotation.*;
+import io.micronaut.http.uri.UriBuilder;
 import lombok.RequiredArgsConstructor;
 
+import java.net.URI;
 import java.util.List;
 
 @Controller("/api/v1")
 @RequiredArgsConstructor
 public class UserController {
+    private final static URI SWAGGER_UI = UriBuilder.of("/swagger-ui").path("index.html").build();
 
     private final UserService service;
 
