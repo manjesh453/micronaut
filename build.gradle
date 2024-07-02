@@ -30,8 +30,9 @@ dependencies {
     implementation("org.springframework:spring-orm")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("io.micronaut:micronaut-http-client")
-
     implementation("org.modelmapper:modelmapper:3.1.0")
+    implementation("io.micronaut.security:micronaut-security-jwt:4.1.0")
+    implementation("io.projectreactor:reactor-core:3.5.5")
 
     // Compile only dependencies
     compileOnly("org.projectlombok:lombok")
@@ -44,7 +45,6 @@ dependencies {
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut.openapi:micronaut-openapi:2.5.0")
-
 
     // Test dependencies
     testImplementation("io.micronaut:micronaut-http-client")
@@ -71,8 +71,6 @@ micronaut {
         annotations("com.*")
     }
     aot {
-        // Please review carefully the optimizations enabled below
-        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
         optimizeServiceLoading.set(false)
         convertYamlToJava.set(false)
         precomputeOperations.set(true)
@@ -83,8 +81,8 @@ micronaut {
         replaceLogbackXml.set(true)
     }
 }
+
 tasks.withType(JavaCompile) {
     options.fork = true
     options.forkOptions.jvmArgs << '-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop'
 }
-

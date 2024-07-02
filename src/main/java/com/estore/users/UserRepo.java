@@ -1,11 +1,8 @@
 package com.estore.users;
 
-import io.micronaut.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import io.micronaut.data.repository.reactive.ReactorCrudRepository;
+import reactor.core.publisher.Mono;
 
-@Repository
-public interface UserRepo extends JpaRepository<UserEntity, Integer> {
-
-
+public interface UserRepo extends ReactorCrudRepository<User, Integer> {
+    Mono<User> getByUsername(String username);
 }
-

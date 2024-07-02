@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createUser(UserDto request) {
-        UserEntity userEntity = modelMapper.map(request, UserEntity.class);
+        User userEntity = modelMapper.map(request, User.class);
         userEntity.setRole(Roles.CUSTOMER);
         repo.save(userEntity);
         return "User created successfully";
@@ -24,14 +24,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(int userId) {
-        UserEntity userEntity = repo.findById(userId).orElseThrow();
+        User userEntity = repo.findById(userId).block();
         return modelMapper.map(userEntity, UserDto.class);
     }
 
     @Override
     public String updateUser(UserDto request, Integer userId) {
-        UserEntity userEntity = repo.findById(userId).orElseThrow();
-        userEntity.setName(request.name());
+        User userEntity = repo.findById(userId).block();
+        userEntity.setUsername(request.name());
         userEntity.setEmail(request.email());
         userEntity.setContact(request.contact());
         userEntity.setPassword(request.password());
@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
         return "User updated successfully";
     }
 
+
     @Override
-    public List<UserDto> getAllUsers() {
-        List<UserEntity> userList=repo.findAll();
-        return userList.stream().map(li->modelMapper.map(li,UserDto.class)).toList();
+    public List<User> getAllUsers() {
+        return repo.findAll().collectList().block();
     }
 }

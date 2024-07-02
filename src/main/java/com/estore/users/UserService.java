@@ -6,5 +6,5 @@ public interface UserService {
     String createUser(UserDto request);
     UserDto getUser(int userId);
     String updateUser(UserDto request,Integer userId);
-    List<UserDto> getAllUsers();
+    List<User> getAllUsers();
 }
