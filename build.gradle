@@ -43,6 +43,8 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api")
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("io.micronaut.openapi:micronaut-openapi:2.5.0")
+
 
     // Test dependencies
     testImplementation("io.micronaut:micronaut-http-client")
